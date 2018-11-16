@@ -1,355 +1,47 @@
-[npm:img]: https://img.shields.io/npm/v/react-social-login.svg?style=flat-square
-[npm:url]: https://www.npmjs.org/package/react-social-login
 
-[standard:img]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square
-[standard:url]: http://standardjs.com
+# Extension for [React Social Login](https://github.com/deepakaggarwal7/react-social-login) library
+![titleimg](/sample.png) 
 
-[dependencies:img]: https://david-dm.org/deepakaggarwal7/react-social-login.svg?style=flat-square
-[dependencies:url]: https://github.com/deepakaggarwal7/react-social-login/blob/master/package.json#L33
+Name | Position  
+---|---
+:dizzy_face: Park Jinyong (Media 13) | NAVER button
+:alien: Moon Wanki (Media 13) | Microsoft button
+:skull: Song Chiwan (Media 14) | kakao button
+:kiss: Um Taegyeong (Media 13) | Twitter button
+  
+## Features  
 
-[license:img]: https://img.shields.io/badge/License-MIT-brightgreen.svg?style=flat-square
-[license:url]: https://opensource.org/licenses/MIT
+[React Social Login](https://github.com/deepakaggarwal7/react-social-login)  
+위 라이브러리는 일부 업체(구글+, 페이스북, 아마존, 인스타그램, 깃허브, 링크드인) 소셜 로그인 API가 적용된 React 버튼 컴포넌트로 사용할 수 있는 환경을 제공하는 라이브러리이다.
 
-# React Social Login &middot; [![NPM version][npm:img]][npm:url] &middot; [![Standard - JavaScript Style Guide][standard:img]][standard:url] &middot; [![Dependencies][dependencies:img]][dependencies:url] &middot; [![License: MIT][license:img]][license:url]
+우리는 이에 현재 제공하고 있지 않은 트위터, 마이크로소프트, 네이버, 카카오 소셜 로그인을 추가하여 지원하는 소셜 로그인 환경을 확장한다.
 
-React Social Login is an HOC which provides social login through multiple providers.
+또한, [React Social Login Buttons](https://github.com/MichalSzorad/react-social-login-buttons) 라이브러리를 자체 적용시켜 버튼 디자인을 동시에 제공함으로써 별도의 버튼 이미지를 불러올 필요를 없앤다.  
 
-**Currently supports Amazon, Facebook, GitHub, Google, Instagram and LinkedIn as providers (more to come!)**
+이를 통해 기존보다 다양한 소셜 로그인 기능을 갖춘 React components를 제공할 수 있게되며  
+소셜 로그인 API 연동이 필요한 React 개발자들은 별도의 API 적용 작업 없이 단순한 컴포넌트 import를 통해 사용할 수 있게 된다.   
+  
 
-## Motivation
+## Forked project
+- **React Social Login** | https://github.com/deepakaggarwal7/react-social-login  
+React Social Login is an HOC which provides social login through multiple providers.  
 
- * Having a component that doesn't dictates the HTML
- * All-in-One login component for different social providers
- * Takes care of warnings from provider's SDKs when multiple instances are placed
- * Kind of re-birth of my previous .Net driven similar open source - SocialAuth.NET
+## Integrate with
+- **React Social Login Buttons** | https://github.com/MichalSzorad/react-social-login-buttons  
+A simple package to display social login buttons using React.  
 
-## Online demo
+## References
+- **ReactJS** | https://reactjs.org  
+No.1 Front-end library in 2018, ReactJS.  
 
-See [https://deepakaggarwal7.github.io/react-social-login](https://deepakaggarwal7.github.io/react-social-login).
+- **Bluebird** | http://bluebirdjs.com  
+Bluebird is a fully featured promise library with focus on innovative features and performance    
 
-## Demo
+## Social login APIs
+- **Twitter** | https://developer.twitter.com/en/docs/basics/authentication/api-reference  
+- **Microsoft** | https://docs.microsoft.com/ko-kr/azure/active-directory/develop/quickstart-v2-javascript  
+- **NAVER** | https://developers.naver.com  
+- **kakao** | https://developers.kakao.com  
 
-Edit `appId` props with your own ones in `demo/index.js` file and build demo:
-
-```shell
-$ npm start
-```
-
-You can then view the demo at [https://localhost:8080][demo].
-
-For GitHub provider, see [GitHub specifics][githubspecifics] first.
-
-## Install
-
-```shell
-$ npm install --save react-social-login
-```
-
-## Usage
-
-Create the component of your choice and transform it into a SocialLogin component.
-
-**SocialButton.js**
-
-```js
-import React from 'react'
-import SocialLogin from 'react-social-login'
-
-const Button = ({ children, triggerLogin, ...props }) => (
-  <button onClick={triggerLogin} {...props}>
-    { children }
-  </button>
-)
-
-export default SocialLogin(Button)
-```
-
-Then, use it like a normal component.
-
-**index.js**
-
-```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-
-import SocialButton from './SocialButton'
-
-const handleSocialLogin = (user) => {
-  console.log(user)
-}
-
-const handleSocialLoginFailure = (err) => {
-  console.error(err)
-}
-
-ReactDOM.render(
-  <div>
-    <SocialButton
-      provider='facebook'
-      appId='YOUR_APP_ID'
-      onLoginSuccess={handleSocialLogin}
-      onLoginFailure={handleSocialLoginFailure}
-    >
-      Login with Facebook
-    </SocialButton>
-  </div>,
-  document.getElementById('app')
-)
-```
-
-### Reference
-
-Raw component props (before transform):
-
-| Prop  | Default  | Type / Values  | Description  |
-|---|---|---|---|
-| appId  | —  | string  | Your app identifier (see [find my appId][findmyappid])  |
-| autoCleanUri  | false  | boolean  | Enable auto URI cleaning with OAuth callbacks  |
-| autoLogin  | false  | boolean  | Enable auto login on `componentDidMount`  |
-| gatekeeper  | —  | string  | Gatekeeper URL to use for GitHub OAuth support (see [GitHub specifics][githubspecifics])  |
-| getInstance  | —  | function  | Return node ref like `ref` function would normally do ([react known issue](https://github.com/facebook/react/issues/4213))  |
-| onLoginFailure  | —  | function  | Callback on login fail  |
-| onLoginSuccess  | —  | function  | Callback on login success  |
-| onLogoutFailure  | —  | function  | Callback on logout fail (`google` only)  |
-| onLogoutSuccess  | —  | function  | Callback on logout success  |
-| provider  | —  | `amazon`, `facebook`, `github`, `google`, `instagram`, `linkedin`  | Social provider to use  |
-| redirect  | -  | string  | URL to redirect after login (available for `github` and `instagram` only)  |
-| scope  | -  | array, string  | An array or string of scopes to be granted on login.  |
-| any other prop  | —  | —  | Any other prop will be forwarded to your component  |
-
-*Note about `redirect`: if you are redirecting on root (eg: https://localhost:8080), you **have** to omit the trailing slash.*
-
-Transformed component props:
-
-| Prop  | Type  | Description  |
-|---|---|---|
-| triggerLogin  | function  | Function to trigger login process, usually attached to an event listener  |
-| triggerLogout  | function  | Function to trigger logout process, usually attached to a container handling login state  |
-| all your props  | —  | All props from your original component, minus SocialLogin specific props  |
-
-### Logout
-
-To implement logout, we need a container handling login state and triggering logout function from a `ref` to `SocialLogin` component.
-
-As it is implemented in the demo, we have two components working together to trigger logout:
-
- * [`Demo` container][democontainer]
- * [`UserCard` component][usercardcomponent]
- 
-Here is how they work together:
-
- 1. [`Demo` is displaying `UserCard` only if user is logged][logoutstep1]
- 2. [`UserCard` gets forwarded a `logout` function][logoutstep2]
- 3. [`UserCard` calls forwarded `logout` prop on click on the logout button][logoutstep3]
- 4. [`logout` function triggers `triggerLogout` prop from a ref to SocialLogin component][logoutstep4]
-
-### Old component support
-
-We decided to keep the old behavior as a fallback, it only supports `facebook`, `google` and `linkedin` providers and is available as a named export:
-
-```js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { OldSocialLogin as SocialLogin } from 'react-social-login'
-
-const handleSocialLogin = (user, err) => {
-  console.log(user)
-  console.log(err)
-}
-
-ReactDOM.render(
-  <div>
-    <SocialLogin
-      provider='facebook'
-      appId='YOUR_APP_ID'
-      callback={handleSocialLogin}
-    >
-      <button>Login with Google</button>
-    </SocialLogin>
-  </div>,
-  document.getElementById('app')
-)
-```
-
-## Build
-
-Though not mandatory, it is recommended to use latest npm5 to match lockfile versions.
-
-```shell
-$ npm install
-$ npm run build
-```
-
-## Miscellaneous
-
-### Find my appId
-
-#### Amazon
-
-See [Amazon developers documentation][amazondoc].
-
-#### Facebook
-
-See [facebook for developers documentation][fb4devdoc].
-
-#### GitHub (see [GitHub specifics][githubspecifics])
-
-* Basic authentication method using personal access tokens: see [GitHub Help][githubhelp].
-* OAuth authentication: see [GitHub Developer guide][githubdoc].
-
-#### Google
-
-See [Google Sign-In for Websites guide][gsignindoc].
-
-#### Instagram
-
-See [Instagram developers documentation][instadoc].
-
-#### LinkedIn
-
-See `Where can I find my API key?` section on the [FAQ][linkedinfaq].
-
-### GitHub specifics
-
-GitHub provider is implemented in two different modes:
-
-* One using [GitHub Personal Tokens][ghpersonaltokens]
-* Another using GitHub OAuth
-
-#### GitHub Personal Tokens mode
-
-Actually, this one is more a hacky way to get user profile than a way to really *connect* your app like OAuth does.
-
-Plus, it requires from users to create their personal token from their GitHub account, which is not a good experience for them.
-
-This mode is the default if you do not provide `gatekeeper` prop and will try to use the `appId` prop to get user data. Anyway, we **strongly advise you to use the GitHub OAuth authentication flow**.
-
-#### GitHub OAuth
-
-If you provide a `gatekeeper` prop, this mode will be active and will use a server of your own to fetch GitHub OAuth access token. This is a [know issue of GitHub][ghoauthwebflowissue].
-
-The simplest way to setup this mode is to use the [Gatekeeper project][gatekeeper]. Just follow setup instructions then tell RSL to use it:
-
-```
-<SocialLogin
-  provider='github'
-  gatekeeper='http://localhost:9999'
-  appId='YOUR_GITHUB_CLIENT_ID'
-  redirect='http://localhost:8080'
->
-  Login with GitHub OAuth
-</SocialLogin>
-```
-
-You can also implement it your own way but you must use the same routing than `Gatekeeper` (`/authenticate/:code`) and return a JSON response containing a `token` or `error` property (it will also throw if it doesn't find `token`).
-
-#### Special instructions to run demo
-
-RSL demo is served over https with `webpack-dev-server`. This is a requirement of Amazon Login SDK. `Gatekeeper` is served over insecure http so you will have to serve the demo through http also to work with GitHub (but it will break Amazon):
-
-```shell
-$ npm run start:insecure
-```
-
-## Change Log
-
-__v2.0.0__ [26 Feb 2017]
-* Use small case for providers
-* Linkedin support added along with previous google and facebook
-* A lot of refactoring done
-* Uses Webpack 2.x
-__Huge  Thanks to  Nicolas Goudry for his generous contribution __
-
-__v2.0.1__ [24 June 2017] merged pull request [#15](https://github.com/deepakaggarwal7/react-social-login/pull/15)
- * Facebook error
- * code styling
- * unnecessary console logs
- * pre-commit lint
-
-__v3.0.0__ [30 July 2017] merged pull request [#19](https://github.com/deepakaggarwal7/react-social-login/pull/19)
- * Rewrote as HOC
- * Instagram
- * GitHub
- * Auto login
- * Better error handling
- * Various fixes
-
-__v3.1.0__ [01 August 2017] merged pull request [#20](https://github.com/deepakaggarwal7/react-social-login/pull/20)
- * Amazon
- * https
-
-__v3.2.0__ [14 September 2017] 3.2.0
- * Custom Google scopes
- * Multiple Google buttons
- * GitHub doc
-
-__v3.2.1__ [06 October 2017] React 16, better build, update dep, additions and fixes
- * Update React to v16
- * Update all dependencies to latest stable versions
- * Optimize webpack build
- * Return full googleAuthResponse
- * Preserve redirect url query string and hash
- * Cancel loading on componentWillUnmount
- * Various fixes
- 
-__v3.3.0__ [22 October 2017] Logout, custom scopes and fixes
- * Add publicProfileURL for LinkedIn
- * Add logout support
- * Fix wrong GitHub id
- * Add custom scope support (all but LinkedIn)
- * Update documentation
- 
-__v3.4.0__ [22 October 2017] Fix logout issues, expose wrapped component ref and fixes
- * Fix logout issue with Amazon
- * Don’t throw error on Instagram logout (like fake SDK load doesn’t throw)
- * Expose wrapped component ref ([react know issue](https://github.com/facebook/react/issues/4213))
- * Small fixes
-
-__v3.4.1__ [08 November 2017] Fix logout issues, adds SSR support and fixes
- * Fix unknown prop `triggerLogout` forwarded to wrapped component
- * Server-side rendering support
- * Small fixes
- * Update README to explain how logout is implemented in demo
-
-__v3.4.2__ [26 December 2017] Fix SSR, refs and update build
- * Fixes url parser when window is undefined (SSR fix)
- * Don’t use refs on stateless components
- * Update build system (`babel-preset-env`, updated dependencies, lighter npm package)
-
-## Tests
-
-TBD
-
-## Main contributors
-* [Deepak Aggarwal][ghdeepak]
-* [Nicolas Goudry][ghngoudry]
-
-## Kind contributors
-* Kamran Ahmed : custom Google scopes
-* Adrien Cohen : multiple Google buttons
-* Jason Loo : full google auth response
-* Andri Janusson : LinkedIn public profile URL
-* Adrien Pascal : SSR support
-
-[demo]: https://localhost:8080
-[findmyappid]: #find-my-appid
-[fb4devdoc]: https://developers.facebook.com/docs/apps/register
-[githubhelp]: https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line
-[githubdoc]: https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/registering-oauth-apps
-[gsignindoc]: https://developers.google.com/identity/sign-in/web/devconsole-project
-[instadoc]: https://www.instagram.com/developer
-[linkedinfaq]: https://developer.linkedin.com/support/faq
-[ghpersonaltokens]: https://github.com/blog/1509-personal-api-tokens
-[ghoauthwebflowissue]: https://github.com/isaacs/github/issues/330
-[gatekeeper]: https://github.com/prose/gatekeeper
-[githubspecifics]: #github-specifics
-[amazondoc]: https://developer.amazon.com/public/apis/engage/login-with-amazon/docs/register_web.html
-[googlescopes]: https://developers.google.com/identity/protocols/googlescopes
-[ghngoudry]: https://github.com/nicolas-goudry
-[ghdeepak]: https://github.com/deepakaggarwal7
-[democontainer]: https://github.com/deepakaggarwal7/react-social-login/blob/master/demo/containers/demo.js
-[usercardcomponent]: https://github.com/deepakaggarwal7/react-social-login/blob/master/demo/components/userCard.js
-[logoutstep1]: https://github.com/deepakaggarwal7/react-social-login/blob/master/demo/containers/demo.js#L73
-[logoutstep2]: https://github.com/deepakaggarwal7/react-social-login/blob/master/demo/containers/demo.js#L62
-[logoutstep3]: https://github.com/deepakaggarwal7/react-social-login/blob/master/demo/components/userCard.js#L121
-[logoutstep4]: https://github.com/deepakaggarwal7/react-social-login/blob/master/demo/containers/demo.js#L66
+## After...
+버튼 Component에 해당 버튼의 속성(크키 등)을 props를 통해 제어할 수 있는 기능을 추가한다.
