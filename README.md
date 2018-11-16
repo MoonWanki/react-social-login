@@ -4,7 +4,7 @@
 
 Name | Position  
 ---|---
-:dizzy_face: Park Jinyong (Media 13) | NAVER button
+:runner: Park Jinyong (Media 13) | NAVER button
 :alien: Moon Wanki (Media 13) | Microsoft button
 :skull: Song Chiwan (Media 14) | kakao button
 :kiss: Um Taegyeong (Media 13) | Twitter button
