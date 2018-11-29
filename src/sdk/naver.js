@@ -1,7 +1,8 @@
 import Promise from 'bluebird'
-var secureRandom = require('secure-random')
+// import { rslError, timestampFromNow, parseAsURL } from '../utils'
+import { parseAsURL } from '../utils'
 
-import { rslError, timestampFromNow, parseAsURL } from '../utils'
+var secureRandom = require('secure-random')
 
 // let naverScopes = [ 'response_type', 'redirect_uri', 'state' ]
 
@@ -62,9 +63,8 @@ const load = ({ appId, redirect, scope }) => new Promise((resolve) => {
         loginButton: {color: 'green', type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */
       })
     naverLogin.init()
-    
+
     naverAuth = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${appId}&redirect_uri=${encodeURIComponent(_redirect.toString())}&state=${encodeURIComponent(stateToken)}`
-    
     // 이게 뭘까
     // window.addEventListener('load', function () {
     //   naverLogin.getLoginStatus(function (status) {
@@ -174,18 +174,18 @@ const login = () => new Promise((resolve, reject) => {
 //     }
 //   })
 
-  // window.amazon.Login.retrieveProfile(authResponse.access_token, (response) => {
-  //   if (response.error) {
-  //     return reject(rslError({
-  //       provider: 'amazon',
-  //       type: 'get_profile',
-  //       description: 'Failed to get user profile',
-  //       error: response
-  //     }))
-  //   }
+// window.amazon.Login.retrieveProfile(authResponse.access_token, (response) => {
+//   if (response.error) {
+//     return reject(rslError({
+//       provider: 'amazon',
+//       type: 'get_profile',
+//       description: 'Failed to get user profile',
+//       error: response
+//     }))
+//   }
 
-  //   return resolve({ ...authResponse, ...response })
-  // })
+//   return resolve({ ...authResponse, ...response })
+// })
 // })
 
 /**
