@@ -120,6 +120,21 @@ export default class Demo extends Component {
           key={'linkedin'}
         >
           Login with LinkedIn
+        </SocialButton>,
+        <SocialButton
+          autoCleanUri
+          provider='naver'
+          appId='Wzrp65CQcHLALXh8OiIw'
+          // secretId='Mfx_1boen3'
+          redirect='https://fxnpnua053.execute-api.us-east-2.amazonaws.com/latest/'
+          onLoginSuccess={this.onLoginSuccess}
+          onLoginFailure={this.onLoginFailure}
+          onLogoutSuccess={this.onLogoutSuccess}
+          onLogoutFailure={this.onLogoutFailure}
+          getInstance={this.setNodeRef.bind(this, 'naver')}
+          key={'naver'}
+        >
+          Login with Naver
         </SocialButton>
       ]
 
