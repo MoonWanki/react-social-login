@@ -46,7 +46,6 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
     super(props)
 
     this.isStateless = !WrappedComponent.prototype.render
-
     this.state = {
       isLoaded: false,
       isConnected: false,

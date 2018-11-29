@@ -5,7 +5,8 @@ const config = {
     'github',
     'google',
     'instagram',
-    'linkedin'
+    'linkedin',
+    'twitter'
   ]
 }
 

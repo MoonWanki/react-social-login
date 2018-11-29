@@ -50,7 +50,6 @@ const load = ({ appId, scope }) => new Promise((resolve, reject) => {
  */
 const checkLogin = () => new Promise((resolve, reject) => {
   const GoogleAuth = window.gapi.auth2.getAuthInstance()
-
   if (!GoogleAuth.isSignedIn.get()) {
     return reject(rslError({
       provider: 'google',
@@ -59,7 +58,7 @@ const checkLogin = () => new Promise((resolve, reject) => {
       error: null
     }))
   }
-
+  console.log(GoogleAuth.currentUser.get())
   return resolve(GoogleAuth.currentUser.get())
 })
 
