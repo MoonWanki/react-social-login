@@ -5,6 +5,7 @@ import google from './google'
 import instagram from './instagram'
 import linkedin from './linkedin'
 import twitter from './twitter'
+import naver from './naver'
 
 export default {
   amazon,
@@ -13,5 +14,6 @@ export default {
   facebook,
   instagram,
   linkedin,
-  twitter
+  twitter,
+  naver
 }

@@ -39,7 +39,6 @@ const load = ({ appId, scope }) => new Promise((resolve) => {
 
   window.onAmazonLoginReady = () => {
     window.amazon.Login.setClientId(appId)
-
     return resolve()
   }
 
