@@ -174,7 +174,21 @@ export default class Demo extends Component {
       }
       children.push(
         <SocialButton
-          autoCleanUri
+          provider='snapchat'
+          appId='235feb3f-a4f0-4701-850b-911310f2bb75'
+          redirect='http://localhost:8080'
+          onLoginSuccess={this.onLoginSuccess}
+          onLoginFailure={this.onLoginFailure}
+          onLogoutSuccess={this.onLogoutSuccess}
+          getInstance={this.setNodeRef.bind(this, 'snapchat')}
+          key={'snapchat'}
+        >
+          Login with Snapshot
+        </SocialButton>
+      )
+      /*
+      children.push(
+        <SocialButton
           provider='twitter'
           appId='5L29zhg7oaGHlHmqiOes3hMar'
           redirect='http://localhost:8080'
@@ -186,6 +200,7 @@ export default class Demo extends Component {
           Login with Twitter
         </SocialButton>
       )
+      */
     }
 
     return children

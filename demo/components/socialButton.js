@@ -8,7 +8,6 @@ class Button extends Component {
     triggerLogin: PropTypes.func.isRequired,
     triggerLogout: PropTypes.func.isRequired
   }
-
   render () {
     const { children, triggerLogin, triggerLogout, ...props } = this.props
     const style = {
@@ -19,7 +18,6 @@ class Button extends Component {
       margin: '5px',
       padding: '10px 20px'
     }
-
     return (
       <div onClick={triggerLogin} style={style} {...props}>
         { children }
