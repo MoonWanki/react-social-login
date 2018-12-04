@@ -120,6 +120,17 @@ export default class Demo extends Component {
           key={'linkedin'}
         >
           Login with LinkedIn
+        </SocialButton>,
+        <SocialButton
+          provider='kakao'
+          appId='4362604e902c8262f104bcbcc38ee9cb'
+          onLoginSuccess={this.onLoginSuccess}
+          onLoginFailure={this.onLoginFailure}
+          onLogoutSuccess={this.onLogoutSuccess}
+          getInstance={this.setNodeRef.bind(this, 'kakao')}
+          key={'kakao'}
+        >
+         Login with kakao
         </SocialButton>
       ]
 
