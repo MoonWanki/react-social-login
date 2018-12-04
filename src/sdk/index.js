@@ -4,6 +4,7 @@ import github from './github'
 import google from './google'
 import instagram from './instagram'
 import linkedin from './linkedin'
+import kakao from './kakao'
 
 export default {
   amazon,
@@ -11,5 +12,6 @@ export default {
   google,
   facebook,
   instagram,
-  linkedin
+  linkedin,
+  kakao
 }
