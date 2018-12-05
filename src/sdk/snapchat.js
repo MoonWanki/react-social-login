@@ -4,13 +4,11 @@ import { rslError, parseAsURL } from '../utils'
 
 let _clientId
 let _redirect
+
 const load = ({ appId, redirect }) => new Promise((resolve, reject) => {
   _clientId = appId
   _redirect = parseAsURL(redirect)
 
-  if (document.getElementById('my-login-button-target')) {
-    return resolve()
-  }
   const firstJS = document.getElementsByTagName('script')[0]
   const js = document.createElement('script')
   if (document.getElementById('loginkit-sdk')) {
@@ -24,29 +22,44 @@ const load = ({ appId, redirect }) => new Promise((resolve, reject) => {
   js.id = 'loginkit-sdk'
   js.src = `https://sdk.snapkit.com/js/v1/login.js`
   firstJS.parentNode.insertBefore(js, firstJS)
-  resolve()
-})
 
-const login = () => new Promise((resolve) => {
-  const loginButtonIconId = 'my-login-button-target'
   window.snapKitInit = function () {
-    window.snap.loginkit.mountButton(loginButtonIconId, {
+    window.snap.loginkit.mountButton('my-login-button-target', {
       clientId: _clientId,
-      redirectURI: _redirect,
+      redirectURI: _redirect.toString(),
       scopeList: [
-        'user.display_name',
-        'user.bitmoji.avatar'
+        'https://auth.snapchat.com/oauth2/api/user.display_name',
+        'https://auth.snapchat.com/oauth2/api/user.bitmoji.avatar'
       ],
       handleResponseCallback: () => {
         window.snap.loginkit.fetchUserInfo()
-          .then(data => console.log('User info:', data))
+          .then((data) => {
+            return resolve(data)
+          })
+          .catch((err) => {
+            console.log(err)
+            return reject(rslError({
+              provider: 'snapchat',
+              type: 'load',
+              description: 'not fetch user',
+              error: null
+            }))
+          })
       }
     })
   }
+})
+
+const login = () => new Promise((resolve, reject) => {
+
+})
+
+const generateUser = () => new Promise((resolve, reject) => {
   return resolve()
 })
 
 export default {
   load,
+  generateUser,
   login
 }

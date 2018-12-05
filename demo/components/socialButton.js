@@ -18,6 +18,7 @@ class Button extends Component {
       margin: '5px',
       padding: '10px 20px'
     }
+
     return (
       <div onClick={triggerLogin} style={style} {...props}>
         { children }
