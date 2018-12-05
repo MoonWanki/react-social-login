@@ -22,6 +22,132 @@ Name | Position
 소셜 로그인 API 연동이 필요한 React 개발자들은 별도의 API 적용 작업 없이 단순한 컴포넌트 import를 통해 사용할 수 있게 된다.   
   
 
+## Usage
+
+Create the component of your choice and transform it into a SocialLogin component.
+
+**SocialButton.js**
+
+```js
+import React from 'react'
+import SocialLogin from 'react-social-login'
+
+const Button = ({ children, triggerLogin, ...props }) => (
+  <button onClick={triggerLogin} {...props}>
+    { children }
+  </button>
+)
+
+export default SocialLogin(Button)
+```
+
+Then, use it like a normal component.
+
+**index.js**
+
+```js
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+import SocialButton from './SocialButton'
+
+const handleSocialLogin = (user) => {
+  console.log(user)
+}
+
+const handleSocialLoginFailure = (err) => {
+  console.error(err)
+}
+
+ReactDOM.render(
+  <div>
+    <SocialButton
+      provider='facebook'
+      appId='YOUR_APP_ID'
+      onLoginSuccess={handleSocialLogin}
+      onLoginFailure={handleSocialLoginFailure}
+    >
+      Login with Facebook
+    </SocialButton>
+  </div>,
+  document.getElementById('app')
+)
+```
+  
+## Props
+
+Raw component props (before transform):
+
+| Prop  | Default  | Type / Values  | Description  |
+|---|---|---|---|
+| appId  | —  | string  | Your app identifier (see [find my appId][findmyappid])  |
+| autoCleanUri  | false  | boolean  | Enable auto URI cleaning with OAuth callbacks  |
+| autoLogin  | false  | boolean  | Enable auto login on `componentDidMount`  |
+| gatekeeper  | —  | string  | Gatekeeper URL to use for GitHub OAuth support (see [GitHub specifics][githubspecifics])  |
+| getInstance  | —  | function  | Return node ref like `ref` function would normally do ([react known issue](https://github.com/facebook/react/issues/4213))  |
+| onLoginFailure  | —  | function  | Callback on login fail  |
+| onLoginSuccess  | —  | function  | Callback on login success  |
+| onLogoutFailure  | —  | function  | Callback on logout fail (`google` only)  |
+| onLogoutSuccess  | —  | function  | Callback on logout success  |
+| provider  | —  | `amazon`, `facebook`, `github`, `google`, `instagram`, `linkedin`  | Social provider to use  |
+| redirect  | -  | string  | URL to redirect after login (available for `github` and `instagram` only)  |
+| scope  | -  | array, string  | An array or string of scopes to be granted on login.  |
+| any other prop  | —  | —  | Any other prop will be forwarded to your component  |
+
+*Note about `redirect`: if you are redirecting on root (eg: https://localhost:8080), you **have** to omit the trailing slash.*
+
+Transformed component props:
+
+| Prop  | Type  | Description  |
+|---|---|---|
+| triggerLogin  | function  | Function to trigger login process, usually attached to an event listener  |
+| triggerLogout  | function  | Function to trigger logout process, usually attached to a container handling login state  |
+| all your props  | —  | All props from your original component, minus SocialLogin specific props  |
+
+## Logout
+
+To implement logout, we need a container handling login state and triggering logout function from a `ref` to `SocialLogin` component.
+
+As it is implemented in the demo, we have two components working together to trigger logout:
+
+ * [`Demo` container][democontainer]
+ * [`UserCard` component][usercardcomponent]
+ 
+Here is how they work together:
+
+ 1. [`Demo` is displaying `UserCard` only if user is logged][logoutstep1]
+ 2. [`UserCard` gets forwarded a `logout` function][logoutstep2]
+ 3. [`UserCard` calls forwarded `logout` prop on click on the logout button][logoutstep3]
+ 4. [`logout` function triggers `triggerLogout` prop from a ref to SocialLogin component][logoutstep4]
+
+## Old component support
+
+We decided to keep the old behavior as a fallback, it only supports `facebook`, `google` and `linkedin` providers and is available as a named export:
+
+```js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { OldSocialLogin as SocialLogin } from 'react-social-login'
+
+const handleSocialLogin = (user, err) => {
+  console.log(user)
+  console.log(err)
+}
+
+ReactDOM.render(
+  <div>
+    <SocialLogin
+      provider='facebook'
+      appId='YOUR_APP_ID'
+      callback={handleSocialLogin}
+    >
+      <button>Login with Google</button>
+    </SocialLogin>
+  </div>,
+  document.getElementById('app')
+)
+```
+  
 ## Forked project
 - **React Social Login** | https://github.com/deepakaggarwal7/react-social-login  
 React Social Login is an HOC which provides social login through multiple providers.  
