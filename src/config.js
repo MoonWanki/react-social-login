@@ -6,6 +6,7 @@ const config = {
     'google',
     'instagram',
     'linkedin',
+    'snapchat',
     'naver'
   ]
 }

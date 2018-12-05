@@ -50,6 +50,16 @@ import { card as cardStyle, hr as hrStyle } from './utils/styles'
 //   }
 // }
 
+/*
+class twitterLoginWithPersonalToken extends Component{
+  constructor(pros){
+    super(props)
+    
+  }
+  ...
+}
+*/
+
 ReactDOM.render(
   <div style={{ ...cardStyle, padding: '1.5rem 2rem', textAlign: 'center' }}>
     <strong>react-social-login demo</strong>

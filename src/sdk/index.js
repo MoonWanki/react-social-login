@@ -4,6 +4,7 @@ import github from './github'
 import google from './google'
 import instagram from './instagram'
 import linkedin from './linkedin'
+import snapchat from './snapchat'
 import naver from './naver'
 
 export default {
@@ -13,5 +14,6 @@ export default {
   facebook,
   instagram,
   linkedin,
+  snapchat,
   naver
 }

@@ -46,7 +46,6 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
     super(props)
 
     this.isStateless = !WrappedComponent.prototype.render
-
     this.state = {
       isLoaded: false,
       isConnected: false,
@@ -292,7 +291,7 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
     }
 
     return (
-      <WrappedComponent triggerLogin={this.login} {...additionnalProps} {...originalProps} />
+      <WrappedComponent id={this.props.provider === 'snapchat' ? 'my-login-button-target' : null} triggerLogin={this.login} {...additionnalProps} {...originalProps} />
     )
   }
 }
