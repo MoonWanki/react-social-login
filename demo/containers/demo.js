@@ -125,8 +125,8 @@ export default class Demo extends Component {
           autoCleanUri
           provider='naver'
           appId='Wzrp65CQcHLALXh8OiIw'
-          // secretId='Mfx_1boen3'
-          redirect='https://fxnpnua053.execute-api.us-east-2.amazonaws.com/latest/'
+          secretid='Mfx_1boen3'
+          redirect='https://localhost:8080'
           onLoginSuccess={this.onLoginSuccess}
           onLoginFailure={this.onLoginFailure}
           onLogoutSuccess={this.onLogoutSuccess}

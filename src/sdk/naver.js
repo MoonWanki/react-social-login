@@ -1,228 +1,246 @@
 import Promise from 'bluebird'
-// import { rslError, timestampFromNow, parseAsURL } from '../utils'
-import { parseAsURL } from '../utils'
+// import uuid from 'uuid/v5'
 
-var secureRandom = require('secure-random')
+import { getQueryStringValue, parseAsURL, rslError } from '../utils'
 
-// let naverScopes = [ 'response_type', 'redirect_uri', 'state' ]
+// const NAVER_API = 'https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js'
 
 // let oauth = false
 // let gatekeeperURL
-// let githubAccessToken
-// let githubAppId
+
+// 발급 받은 accessToken
+let naverAccessToken
+let naverAppId
+// 로그인 요청 url
 let naverAuth
-let stateToken
+// 상태 토큰
+// let naverStateToken
+let naverSecretId
+// accessToken 받기 위한 코드
+// let naverAuthCode
 
-/**
- * Loads naver SDK.
- * @param {string} appId
- * @param {array|string} scope
- * @see https://developers.naver.com/docs/login/web/#2--javascript%EB%A1%9C-%EB%84%A4%EC%9D%B4%EB%B2%84-%EC%95%84%EC%9D%B4%EB%94%94%EB%A1%9C-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
- */
+// const generateState = () => {
+//   var array = new Uint32Array(32)
+//   window.crypto.getRandomValues(array)
+//   array.toString(32)
+//   let randNum = array.map(Number)
+//   return randNum
+// }
 
-let generateState = () => {
-  secureRandom(44).toString(32)
+// naverStateToken = generateState()
+
+// Load fetch polyfill for browsers not supporting fetch API
+if (typeof window !== 'undefined' && !window.fetch) {
+  require('whatwg-fetch')
 }
 
-stateToken = generateState()
+/**
+ * Fake Github SDK loading (needed to trick RSL into thinking its loaded).
+ * @param {string} appId
+ * @param {string} gatekeeper
+ * @param {string} redirect
+ * @param {array|string} scope
+ */
+const load = ({ appId, gatekeeper, redirect, secretid }) => new Promise((resolve, reject) => {
+  if (!appId) {
+    return reject(rslError({
+      provider: 'naver',
+      type: 'load',
+      description: 'Cannot load SDK without appId',
+      error: null
+    }))
+  }
 
-const load = ({ appId, redirect, scope }) => new Promise((resolve) => {
+  naverAppId = appId
+  naverSecretId = secretid
+  console.log(secretid)
+  console.log('naver client secret: ' + naverSecretId)
+
   const _redirect = parseAsURL(redirect)
+  const searchParams = 'rslCallback=naver'
 
-  // @TODO: handle errors
-  if (document.getElementById('naverIdLogin')) {
-    return resolve()
-  }
+  _redirect.search = _redirect.search ? _redirect.search + '&' + searchParams + '&code' : '?' + searchParams
 
-  const firstJS = document.getElementsByTagName('script')[ 0 ]
-  const js = document.createElement('script')
+  // naverAuth = `https://nid.naver.com/oauth2.0/authorize?client_id=${naverAppId}&response_type=code&redirect_uri=${encodeURIComponent(_redirect.toString())}&state=${encodeURIComponent(naverStateToken)}`
 
-  js.src = '//static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js'
-  js.id = 'naverIdLogin'
-  js.type = 'text/javascript'
-
-  // window.naverInit = function(){
+  naverAuth = `https://nid.naver.com/oauth2.0/authorize?client_id=${naverAppId}&response_type=code&redirect_uri=${encodeURIComponent(_redirect.toString())}&state=RAMDOM_STATE`// ${"RANDOM-STATE"encodeURIComponent(naverStateToken)}`
+  // if (getQueryStringValue('code')) {
+  //   naverAuthCode = 'code'
+  //   console.log(naverAuthCode)
   // }
-  // window.naverAsyncInit = () => {
-  //   var naverLogin = new window.naver.LoginWithNaverId(
-  //     {
-  //       clientId: appId,
-  //       callbackUrl: redirectUri,
-  //       isPopup: true, /* 팝업을 통한 연동처리 여부 */
-  //       loginButton: {color: 'green', type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */
-  //     })
-  //   naverLogin.init()
-  //   return resolve()
-  // }
-  js.onload = () => {
-    var naverLogin = new window.naver.LoginWithNaverId(
-      {
-        clientId: appId,
-        callbackUrl: redirect,
-        isPopup: true, /* 팝업을 통한 연동처리 여부 */
-        loginButton: {color: 'green', type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */
+
+  if (getQueryStringValue('rslCallback') === 'naver') {
+    console.log('naver client secret: ' + naverSecretId)
+
+    getAccessToken()
+      .then((accessToken) => {
+        naverAccessToken = accessToken
+        console.log(naverAccessToken)
+        return resolve(naverAccessToken)
       })
-    naverLogin.init()
-
-    naverAuth = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${appId}&redirect_uri=${encodeURIComponent(_redirect.toString())}&state=${encodeURIComponent(stateToken)}`
-    // 이게 뭘까
-    // window.addEventListener('load', function () {
-    //   naverLogin.getLoginStatus(function (status) {
-    //     if (status) {
-    //       /* (5) 필수적으로 받아야하는 프로필 정보가 있다면 callback처리 시점에 체크 */
-    //       var email = naverLogin.user.getEmail()
-    //       if (email === undefined || email == null) {
-    //         alert('이메일은 필수정보입니다. 정보제공을 동의해주세요.')
-    //         /* (5-1) 사용자 정보 재동의를 위하여 다시 네아로 동의페이지로 이동함 */
-    //         naverLogin.reprompt()
-    //         return
-    //       }
-    //       // callback으로 돌아가기
-    //       window.location.replace('http://' + window.location.hostname + ((location.port === '' || location.port === undefined) ? ':' : '' + location.port) + '/sample/main.html')
-    //     } else {
-    //       console.log('callback 처리에 실패하였습니다.')
-    //     }
-    //   })
-    // })
+      .catch(reject)
+  } else {
     return resolve()
   }
-
-  // var naverLogin = new window.naver.LoginWithNaverId(
-  //   {
-  //     clientId: appId,
-  //     callbackUrl: redirectUri,
-  //     isPopup: true, /* 팝업을 통한 연동처리 여부 */
-  //     loginButton: {color: 'green', type: 3, height: 60} /* 로그인 버튼의 타입을 지정 */
-  //   })
-  // naverLogin.init()
-  // return resolve()
-
-  if (!firstJS) {
-    document.appendChild(js)
-  } else {
-    firstJS.parentNode.appendChild(js)
-  }
 })
 
 /**
- * Checks if user is logged in to app through Amazon.
- * Requires SDK to be loaded first.
- * @see https://developer.amazon.com/public/apis/engage/login-with-amazon/docs/javascript_sdk_reference.html#authorize
+ * Check if user is logged in to app through GitHub.
+ * @see https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-authorization-options-for-oauth-apps/#redirect-urls
  */
-// const checkLogin = () => new Promise((resolve, reject) => {
-//   window.amazon.Login.authorize({ scope: naverScopes }, (response) => {
-//     if (response.error) {
-//       return reject(rslError({
-//         provider: 'amazon',
-//         type: 'auth',
-//         description: 'Authentication failed',
-//         error: response
-//       }))
-//     }
+// const checkLogin = (autoLogin = false) => {
+//   console.log('체크 로그인 요청')
 
-//     return getProfile(response).then(resolve, reject)
-//   })
-// })
+//   if (autoLogin) {
+//     return login()
+//   }
 
-/**
- * Trigger naver login process.
- * Requires SDK to be loaded first.
- */
-const login = () => new Promise((resolve, reject) => {
-  window.open(naverAuth)
-  // const GoogleAuth = window.gapi.auth2.getAuthInstance()
-
-  // GoogleAuth.signIn().then(
-  //   () => checkLogin().then(resolve, reject),
-  //   (err) => reject(rslError({
-  //     provider: 'google',
-  //     type: 'auth',
-  //     description: 'Authentication failed',
-  //     error: err
-  //   }))
-  // )
-})
-
-/**
- * Trigger Amazon logout.
- * Requires SDK to be loaded first.
- * @see https://developer.amazon.com/docs/login-with-amazon/javascript-sdk-reference.html#logout
- */
-// const logout = () => new Promise((resolve) => {
-//   window.amazon.Login.logout()
-
-//   return resolve()
-// })
-
-/**
- * Gets currently logged in user profile data.
- * Requires SDK to be loaded first.
- * @see https://developer.amazon.com/public/apis/engage/login-with-amazon/docs/javascript_sdk_reference.html#retrieveProfile
- */
-// const getProfile = (authResponse) => new Promise((resolve, reject) => {
-//   //naver status
-//   window.naverLogin.getLoginStatus(function (status) {
-//     if (status) {
-//       var email = window.naverLogin.user.getEmail()
-//       var name = window.naverLogin.user.getNickName()
-//       var profileImage = window.naverLogin.user.getProfileImage()
-//       var birthday = window.naverLogin.user.getBirthday()
-//       var uniqId = window.naverLogin.user.getId()
-//       var age = window.naverLogin.user.getAge()
-//     } else {
-//       console.log('AccessToken이 올바르지 않습니다.')
-//     }
-//   })
-
-// window.amazon.Login.retrieveProfile(authResponse.access_token, (response) => {
-//   if (response.error) {
-//     return reject(rslError({
-//       provider: 'amazon',
-//       type: 'get_profile',
-//       description: 'Failed to get user profile',
-//       error: response
+//   if (!naverAccessToken && oauth) {
+//     return Promise.reject(rslError({
+//       provider: 'naver',
+//       type: 'access_token',
+//       description: 'No access token available',
+//       error: null
 //     }))
 //   }
 
-//   return resolve({ ...authResponse, ...response })
-// })
-// })
+//   return new Promise((resolve, reject) => {
+//     console.log('프로미즈 안')
+//     window.fetch(naverAuth, {mode: 'no-cors'})
+//       .then((response) => response.json())
+//       // .then((json) => {
+//       //   naverAuthCode = json.code,
+//       //   naverStateToken = json.state
+//       // })
+//       .then((json) => {
+//         if (json.message || json.errors) {
+//           return reject(rslError({
+//             provider: 'naver',
+//             type: 'check_login',
+//             description: 'Failed to fetch user data',
+//             error: json
+//           }))
+//         }
+
+//         return resolve(json)
+//       })
+//       .catch(err => {
+//         console.error(err)
+//         reject(
+//           rslError({
+//             provider: 'naver',
+//             type: 'check_login',
+//             description: 'Failed to fetch user data due to window.fetch() error',
+//             error: null
+//           })
+//         )
+//       })
+//   })
+// }
+
+/**
+ * Trigger GitHub login process.
+ * This code only triggers login request, response is handled by a callback handled on SDK load.
+ * @see https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-authorization-options-for-oauth-apps
+ */
+const login = () => new Promise((resolve, reject) => {
+  console.log('naver client secret: ' + naverSecretId)
+  window.open(naverAuth, '_self')
+  console.log('로그인 요청')
+  // checkLogin()
+  //   .then((response) => resolve(response))
+  //   .catch((error) => {
+  //     if (!oauth) {
+  //       return reject(error)
+  //     }
+
+  //     window.open(naverAuth, '_self')
+  //   })
+})
+
+/**
+ * Fake GitHub logout always throwing error.
+ */
+const logout = () => new Promise((resolve, reject) => reject(rslError({
+  provider: 'naver',
+  type: 'logout',
+  description: 'Cannot logout from naver provider',
+  error: null
+})))
+
+/**
+ * Get access token with authorization code
+ * @see https://github.com/prose/gatekeeper
+ * @see https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-authorization-options-for-oauth-apps
+ */
+
+const getAccessToken = () => new Promise((resolve, reject) => {
+  // const authorizationCode = getQueryStringValue('code')
+  console.log('getAccessToke method 접근')
+
+  const naverAuthCode = getQueryStringValue('code')
+  const naverStateToken = getQueryStringValue('state')
+
+  if (!naverAuthCode) {
+    return reject(new Error('Authorization code not found'))
+  }
+  // window.fetch(naverAuth, {mode: 'no-cors'})
+  console.log('naver app id: ' + naverAppId)
+  console.log('naver client secret: ' + naverSecretId)
+  console.log('naver auth code: ' + naverAuthCode)
+  console.log('naver state token: ' + encodeURIComponent(naverStateToken))
+
+  window.fetch(`https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${naverAppId}&client_secret=${naverSecretId}&code=${naverAuthCode}&state=${naverStateToken}`, {mode: 'no-cors'})// ${encodeURIComponent(naverStateToken)}`, {method: 'GET', headers: new Headers(), mode: 'no-cors', cache: 'default'})
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.error || !json.token) {
+        return reject(rslError({
+          provider: 'naver',
+          type: 'access_token',
+          description: 'Got error from fetch access token',
+          error: json
+        }))
+      }
+
+      return resolve(json.token)
+    })
+    .catch((error) => {
+      console.error(error)
+      return reject(rslError({
+        provider: 'naver',
+        type: 'access_token',
+        description: 'Failed to fetch user data due to window.fetch() error',
+        error
+      }))
+    })
+})
 
 /**
  * Helper to generate user account data.
- * @param {Object} response
- * @see https://developer.amazon.com/public/apis/engage/login-with-amazon/docs/javascript_sdk_reference.html#retrieveProfile
+ * @param {Object} viewer
+ * @see About token expiration: https://gist.github.com/technoweenie/419219#gistcomment-3232
  */
-// const generateUser = (response) => ({
-//   profile: {
-
-//     email = window.naverLogin.user.getEmail(),
-//     name = window.naverLogin.user.getNickName(),
-//     profileImage = window.naverLogin.user.getProfileImage(),
-//     birthday = window.naverLogin.user.getBirthday(),
-//     uniqId = window.naverLogin.user.getId(),
-//     age = window.naverLogin.user.getAge()
-//     // id: response.id,
-//     // name: response.name,
-//     // firstName: response.name,
-//     // lastName: response.name,
-//     // email: response.email,
-//     // profilePicURL: response.profile_image,
-//     // nickname: response.nickname,
-//     // age: response.age,
-//     // gender: response.gender,
-//     // birthday: response.birthday
-//   },
-//   token: {
-//     accessToken: response.access_token,
-//     expiresAt: timestampFromNow(response.expires_in)
-//   }
-// })
+const generateUser = ({ data: { viewer } }) => {
+  return {
+    profile: {
+      id: viewer.id,
+      name: viewer.login,
+      firstName: viewer.name,
+      lastName: viewer.name,
+      email: viewer.email,
+      profilePicURL: viewer.avatarUrl
+    },
+    token: {
+      accessToken: naverAccessToken,
+      expiresAt: Infinity
+    }
+  }
+}
 
 export default {
   // checkLogin,
-  // generateUser,
+  generateUser,
   load,
-  login
-  // logout
+  login,
+  logout
 }
