@@ -125,12 +125,6 @@
 // POST /oauth/token HTTP/1.1
 // Host: kauth.kakao.com
 
-// curl -v -X POST https://kauth.kakao.com/oauth/token \
-//  -d 'grant_type=authorization_code' \
-//  -d 'client_id={app_key}' \
-//  -d 'redirect_uri={redirect_uri}' \
-//  -d 'code={authorize_code}' \  
-
 //  //logout request
 //  POST /v1/user/logout HTTP/1.1
 // Host: kapi.kakao.com
@@ -186,3 +180,68 @@
 // }
 
 // window.open('https://kauth.kakao.com/oauth/authorize')
+import Promise from 'bluebird'
+
+import { rslError, parseAsURL } from '../utils'
+
+let _clientId
+let _redirect
+
+const load = ({ appId, redirect }) => new Promise((resolve, reject) => {
+  _clientId = appId
+  _redirect = parseAsURL(redirect)
+
+  const firstJS = document.getElementsByTagName('script')[0]
+  const js = document.createElement('script')
+  if (document.getElementById('kakao-login-btn')) {
+    return reject(rslError({
+      provider: 'kakao',
+      type: 'load',
+      description: 'already load Element',
+      error: null
+    }))
+  }
+  js.id = 'kakao-login-btn'
+  js.src = `//developers.kakao.com/sdk/js/kakao.min.js`
+  firstJS.parentNode.insertBefore(js, firstJS)
+
+  window.kakaoKitInit = function () {
+    window.kakao.loginkit.mountButton('my-login-button-target', {
+      clientId: _clientId,
+      redirectURI: _redirect.toString(),
+      scopeList: [
+        'https://auth.kakao.com/oauth2/api/user.display_name',
+        'https://auth.kakao.com/oauth2/api/user.bitmoji.avatar'
+      ],
+      handleResponseCallback: () => {
+        window.kakao.loginkit.fetchUserInfo()
+          .then((data) => {
+            return resolve(data)
+          })
+          .catch((err) => {
+            console.log(err)
+            return reject(rslError({
+              provider: 'kakao',
+              type: 'load',
+              description: 'not fetch user',
+              error: null
+            }))
+          })
+      }
+    })
+  }
+})
+
+const login = () => new Promise((resolve, reject) => {
+
+})
+
+const generateUser = () => new Promise((resolve, reject) => {
+  return resolve()
+})
+
+export default {
+  load,
+  generateUser,
+  login
+}

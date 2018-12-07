@@ -122,9 +122,9 @@ export default class Demo extends Component {
           Login with LinkedIn
         </SocialButton>,
         <SocialButton
-<<<<<<< HEAD
           provider='kakao'
           appId='885ff360b748f666fa5affe576505b3d'
+          redirect='https://localhost:8080'
           onLoginSuccess={this.onLoginSuccess}
           onLoginFailure={this.onLoginFailure}
           onLogoutSuccess={this.onLogoutSuccess}
@@ -132,7 +132,8 @@ export default class Demo extends Component {
           key={'kakao'}
         >
          Login with kakao
-=======
+        </SocialButton>,
+        <SocialButton
           autoCleanUri
           provider='naver'
           appId='Wzrp65CQcHLALXh8OiIw'
@@ -146,7 +147,6 @@ export default class Demo extends Component {
           key={'naver'}
         >
           Login with Naver
->>>>>>> d52cb15acc26f318243c422ad001211997058291
         </SocialButton>
       ]
 
