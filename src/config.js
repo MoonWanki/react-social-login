@@ -8,7 +8,8 @@ const config = {
     'linkedin',
     'kakao',
     'snapchat',
-    'naver'
+    'naver',
+    'yahoo'
   ]
 }
 

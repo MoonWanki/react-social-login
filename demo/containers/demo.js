@@ -147,6 +147,18 @@ export default class Demo extends Component {
           key={'naver'}
         >
           Login with Naver
+        </SocialButton>,
+        <SocialButton
+          provider='yahoo'
+          appId='dj0yJmk9Tmx2Q3RIVGhUQkZZJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTMw'
+          redirect='https://deepakaggarwal7.github.io/'
+          onLoginSuccess={this.onLoginSuccess}
+          onLoginFailure={this.onLoginFailure}
+          onLogoutSuccess={this.onLogoutSuccess}
+          onLogoutFailure={this.onLogoutFailure}
+          getInstance={this.setNodeRef.bind(this, 'yahoo')}
+          key={'yahoo'}>
+          Login with Yahoo
         </SocialButton>
       ]
 

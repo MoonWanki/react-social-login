@@ -7,6 +7,7 @@ import linkedin from './linkedin'
 import kakao from './kakao'
 import snapchat from './snapchat'
 import naver from './naver'
+import yahoo from './yahoo'
 
 export default {
   amazon,
@@ -17,5 +18,6 @@ export default {
   linkedin,
   kakao,
   snapchat,
-  naver
+  naver,
+  yahoo
 }
