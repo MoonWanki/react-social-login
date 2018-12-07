@@ -56,9 +56,18 @@
   "homepage": "https://github.com/deepakaggarwal7/react-social-login#readme",
   "dependencies": {
     "bluebird": "3.5.1",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
     "fetch-jsonp": "1.1.3",
+    "i": "^0.3.6",
     "prop-types": "15.6.0",
+    "pug": "^2.0.3",
     "react": "16.1.0",
+<<<<<<< Updated upstream
+    "secure-random": "^1.1.1",
+=======
+    "request": "^2.88.0",
+>>>>>>> Stashed changes
     "uuid": "3.1.0",
     "whatwg-fetch": "2.0.3"
   },

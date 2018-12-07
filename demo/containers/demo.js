@@ -122,8 +122,9 @@ export default class Demo extends Component {
           Login with LinkedIn
         </SocialButton>,
         <SocialButton
+<<<<<<< HEAD
           provider='kakao'
-          appId='4362604e902c8262f104bcbcc38ee9cb'
+          appId='885ff360b748f666fa5affe576505b3d'
           onLoginSuccess={this.onLoginSuccess}
           onLoginFailure={this.onLoginFailure}
           onLogoutSuccess={this.onLogoutSuccess}
@@ -131,6 +132,21 @@ export default class Demo extends Component {
           key={'kakao'}
         >
          Login with kakao
+=======
+          autoCleanUri
+          provider='naver'
+          appId='Wzrp65CQcHLALXh8OiIw'
+          // secretId='Mfx_1boen3'
+          redirect='https://fxnpnua053.execute-api.us-east-2.amazonaws.com/latest/'
+          onLoginSuccess={this.onLoginSuccess}
+          onLoginFailure={this.onLoginFailure}
+          onLogoutSuccess={this.onLogoutSuccess}
+          onLogoutFailure={this.onLogoutFailure}
+          getInstance={this.setNodeRef.bind(this, 'naver')}
+          key={'naver'}
+        >
+          Login with Naver
+>>>>>>> d52cb15acc26f318243c422ad001211997058291
         </SocialButton>
       ]
 
@@ -168,6 +184,35 @@ export default class Demo extends Component {
           </SocialButton>
         )
       }
+      children.push(
+        <SocialButton
+          provider='snapchat'
+          appId='235feb3f-a4f0-4701-850b-911310f2bb75'
+          redirect='https://localhost:8080'
+          onLoginSuccess={this.onLoginSuccess}
+          onLoginFailure={this.onLoginFailure}
+          onLogoutSuccess={this.onLogoutSuccess}
+          getInstance={this.setNodeRef.bind(this, 'snapchat')}
+          key={'snapchat'}
+        >
+          Login with Snapshot
+        </SocialButton>
+      )
+      /*
+      children.push(
+        <SocialButton
+          provider='twitter'
+          appId='5L29zhg7oaGHlHmqiOes3hMar'
+          redirect='http://localhost:8080'
+          getInstance={this.setNodeRef.bind(this, 'twitter')}
+          onLoginSuccess={this.onLoginSuccess}
+          onLoginFailure={this.onLoginFailure}
+          key={'twitter'}
+        >
+          Login with Twitter
+        </SocialButton>
+      )
+      */
     }
 
     return children
