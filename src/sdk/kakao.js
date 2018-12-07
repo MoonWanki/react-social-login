@@ -37,13 +37,14 @@ const login = () => new Promise((resolve, reject) => {
       window.Kakao.API.request({
         url: '/v2/user/me',
         success: function (res) {
-          alert(JSON.stringify(res))
+          console.log(res)
+          return resolve({ ...authObj, ...res })
         },
         fail: function (error) {
-          alert(JSON.stringify(error))
+          console.log(error)
+          return reject(error)
         }
       })
-      return resolve(authObj)
     },
     fail: function (err) {
       console.log(err)
@@ -52,12 +53,33 @@ const login = () => new Promise((resolve, reject) => {
   })
 })
 
-const generateUser = () => new Promise((resolve, reject) => {
-  return resolve()
+const generateUser = ({ token_type, scope, expires_in, access_token, id, kakao_account, properties }) => {
+  return {
+    profile: {
+      id,
+      name: properties.nickname,
+      firstName: '',
+      lastName: '',
+      email: '',
+      profilePicURL: ''
+    },
+    token: {
+      accessToken: access_token,
+      scope,
+      expiresIn: expires_in,
+      expiresAt: expires_in,
+      token_type
+    }
+  }
+}
+
+const logout = () => new Promise((resolve, reject) => {
+  window.Kakao.Auth.logout(() => resolve())
 })
 
 export default {
   load,
   generateUser,
-  login
+  login,
+  logout
 }

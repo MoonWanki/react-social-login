@@ -71,7 +71,6 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
   /**
    * Loads SDK on componentDidMount and handles auto login.
    */
-
   componentDidMount () {
     const { appId, autoCleanUri, autoLogin, gatekeeper, redirect, scope } = this.props
 
