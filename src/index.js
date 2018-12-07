@@ -71,6 +71,7 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
   /**
    * Loads SDK on componentDidMount and handles auto login.
    */
+
   componentDidMount () {
     const { appId, autoCleanUri, autoLogin, gatekeeper, redirect, scope } = this.props
 
@@ -291,7 +292,14 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
     }
 
     return (
-      <WrappedComponent id={this.props.provider === 'snapchat' ? 'my-login-button-target' : null} triggerLogin={this.login} {...additionnalProps} {...originalProps} />
+      <WrappedComponent
+        id={this.props.provider === 'snapchat'
+          ? 'my-login-button-target'
+          : this.props.provider === 'kakao'
+            ? 'kakao-login-btn' : null}
+        triggerLogin={this.login}
+        {...additionnalProps}
+        {...originalProps} />
     )
   }
 }
