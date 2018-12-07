@@ -7,7 +7,8 @@ const config = {
     'instagram',
     'linkedin',
     'snapchat',
-    'naver'
+    'naver',
+    'yahoo'
   ]
 }
 
