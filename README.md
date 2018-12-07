@@ -5,7 +5,7 @@
 Name | Position  
 ---|---
 :swimmer: Park Jinyong (Media 13) | NAVER button
-:alien: Moon Wanki (Media 13) | Microsoft button
+:alien: Moon Wanki (Media 13) | Yahoo! button
 :skull: Song Chiwan (Media 14) | kakao button
 :kiss: Um Taegyeong (Media 13) | Snapchat button
   
