@@ -186,21 +186,6 @@ export default class Demo extends Component {
           Login with Snapshot
         </SocialButton>
       )
-      /*
-      children.push(
-        <SocialButton
-          provider='twitter'
-          appId='5L29zhg7oaGHlHmqiOes3hMar'
-          redirect='http://localhost:8080'
-          getInstance={this.setNodeRef.bind(this, 'twitter')}
-          onLoginSuccess={this.onLoginSuccess}
-          onLoginFailure={this.onLoginFailure}
-          key={'twitter'}
-        >
-          Login with Twitter
-        </SocialButton>
-      )
-      */
     }
 
     return children
