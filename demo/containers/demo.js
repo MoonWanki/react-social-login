@@ -122,6 +122,18 @@ export default class Demo extends Component {
           Login with LinkedIn
         </SocialButton>,
         <SocialButton
+          provider='kakao'
+          appId='09e70adbe8e9b5c5b80ebb5b67f3c194'
+          redirect='https://localhost:8080'
+          onLoginSuccess={this.onLoginSuccess}
+          onLoginFailure={this.onLoginFailure}
+          onLogoutSuccess={this.onLogoutSuccess}
+          getInstance={this.setNodeRef.bind(this, 'kakao')}
+          key={'kakao'}
+        >
+         Login with kakao
+        </SocialButton>,
+        <SocialButton
           autoCleanUri
           provider='naver'
           appId='Wzrp65CQcHLALXh8OiIw'
@@ -135,6 +147,18 @@ export default class Demo extends Component {
           key={'naver'}
         >
           Login with Naver
+        </SocialButton>,
+        <SocialButton
+          provider='yahoo'
+          appId='dj0yJmk9Tmx2Q3RIVGhUQkZZJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTMw'
+          redirect='https://deepakaggarwal7.github.io/'
+          onLoginSuccess={this.onLoginSuccess}
+          onLoginFailure={this.onLoginFailure}
+          onLogoutSuccess={this.onLogoutSuccess}
+          onLogoutFailure={this.onLogoutFailure}
+          getInstance={this.setNodeRef.bind(this, 'yahoo')}
+          key={'yahoo'}>
+          Login with Yahoo
         </SocialButton>
       ]
 

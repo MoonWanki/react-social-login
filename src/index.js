@@ -300,5 +300,4 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
     // return (<WrappedComponent id={this.props.provider === 'snapchat' ? 'my-login-button-target' : null} triggerLogin={this.login} {...additionnalProps} {...originalProps} />)
   }
 }
-
 export default SocialLogin
