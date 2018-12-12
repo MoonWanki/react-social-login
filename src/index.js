@@ -290,8 +290,16 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
       }
     }
 
+    let id
+    if (this.props.provider === 'snapchat') id = 'my-login-button-target'
+    else if (this.props.provider === 'kakao') id = 'kakao-login-btn'
+
     return (
-      <WrappedComponent id={this.props.provider === 'snapchat' ? 'my-login-button-target' : null} triggerLogin={this.login} {...additionnalProps} {...originalProps} />
+      <WrappedComponent
+        id={id}
+        triggerLogin={this.login}
+        {...additionnalProps}
+        {...originalProps} />
     )
   }
 }

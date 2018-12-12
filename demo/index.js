@@ -54,7 +54,7 @@ import { card as cardStyle, hr as hrStyle } from './utils/styles'
 class twitterLoginWithPersonalToken extends Component{
   constructor(pros){
     super(props)
-    
+
   }
   ...
 }

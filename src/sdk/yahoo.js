@@ -10,7 +10,6 @@ const load = ({ appId, redirect }) => new Promise((resolve) => {
 })
 
 const checkLogin = (autoLogin = false) => {
-  console.log('checkLogin started')
   if (autoLogin) return login()
   if (!yahooAccessToken) {
     return Promise.reject(rslError({
@@ -49,13 +48,25 @@ const login = () => new Promise((resolve, reject) => {
     })
 })
 
-const generateUser = () => {
-  console.log('')
-}
+const generateUser = data => ({
+  profile: {
+    id: null,
+    name: null,
+    firstName: null,
+    lastName: null,
+    email: null,
+    profilePicURL: null
+  },
+  token: {
+    accessToken: null,
+    expiresAt: null
+  }
+})
 
-const logout = () => {
-  console.log('chekc login')
-}
+const logout = () => new Promise((resolve) => {
+  yahooAccessToken = null
+  return resolve()
+})
 
 export default {
   checkLogin,
