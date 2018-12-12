@@ -124,7 +124,7 @@ export default class Demo extends Component {
         <SocialButton
           provider='kakao'
           appId='09e70adbe8e9b5c5b80ebb5b67f3c194'
-          redirect='https://localhost:8080'
+          // redirect='https://localhost:8080'
           onLoginSuccess={this.onLoginSuccess}
           onLoginFailure={this.onLoginFailure}
           onLogoutSuccess={this.onLogoutSuccess}

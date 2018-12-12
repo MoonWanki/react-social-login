@@ -9,17 +9,6 @@ const load = ({ appId, redirect }) => new Promise((resolve, reject) => {
   js.onload = () => {
     window.Kakao.init(appId)
     return resolve()
-    // window.Kakao.Auth.createLoginButton({
-    //   container: '#kakao-login-btn',
-    //   success: function (authObj) {
-    //     console.log(authObj)
-    //     return resolve()
-    //   },
-    //   fail: function (err) {
-    //     console.log(err)
-    //     return reject(err)
-    //   }
-    // })
   }
 
   if (!firstJS) {
@@ -33,7 +22,7 @@ const login = () => new Promise((resolve, reject) => {
   window.Kakao.Auth.login({
     success: function (authObj) {
       console.log(authObj)
-      // window.Kakao.Auth.setAccessToken(authObj.access_token)
+      // window.Kakao.Auth.setAccessToken(authObj.access_token)  "SDK cannot Refresh token" "get refresh token from server"
       window.Kakao.API.request({
         url: '/v2/user/me',
         success: function (res) {
