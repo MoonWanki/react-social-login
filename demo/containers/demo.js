@@ -137,7 +137,7 @@ export default class Demo extends Component {
           autoCleanUri
           provider='naver'
           appId='Wzrp65CQcHLALXh8OiIw'
-          secretid='Mfx_1boen3'
+          // secretid='Mfx_1boen3'
           redirect='https://localhost:8080'
           onLoginSuccess={this.onLoginSuccess}
           onLoginFailure={this.onLoginFailure}
@@ -200,7 +200,7 @@ export default class Demo extends Component {
         <SocialButton
           provider='snapchat'
           appId='235feb3f-a4f0-4701-850b-911310f2bb75'
-          redirect='https://localhost:8080'
+          redirect='https://localhost:8080/#'
           onLoginSuccess={this.onLoginSuccess}
           onLoginFailure={this.onLoginFailure}
           onLogoutSuccess={this.onLogoutSuccess}
