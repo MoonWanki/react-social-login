@@ -1,13 +1,11 @@
 import Promise from 'bluebird'
 
-import { rslError, parseAsURL } from '../utils'
+import { rslError } from '../utils'
 
 let _clientId
-let _redirect
 
 const load = ({ appId, redirect }) => new Promise((resolve, reject) => {
   _clientId = appId
-  _redirect = parseAsURL(redirect)
 
   const firstJS = document.getElementsByTagName('script')[0]
   const js = document.createElement('script')
@@ -26,34 +24,27 @@ const load = ({ appId, redirect }) => new Promise((resolve, reject) => {
   window.snapKitInit = function () {
     window.snap.loginkit.mountButton('my-login-button-target', {
       clientId: _clientId,
-      /*
-      handleAuthGrantFlowCallback: () => {
-        window.snap.loginkit.getSharedDataAccessToken()
-          .then((token) => {
-            console.log(token)
-            return resolve(token)
-          })
-      },
-      */
-      redirectURI: _redirect.toString(),
+      redirectURI: redirect,
       scopeList: [
-        `user.display_name`,
-        `user.bitmoji.avatar`
+        `https://auth.snapchat.com/oauth2/api/user.display_name`,
+        `https://auth.snapchat.com/oauth2/api/user.bitmoji.avatar`
       ],
-      handleResponseCallback: () => {
-        /*
-        window.snap.getSharedDataAccessToken()
-          .then((data) => {
-            console.log(data)
-            return resolve(data)
-          })
-        */
+
+      handleResponseCallback: function (err) {
+        console.log(err)
+        let d = window.snap.loginkit.generateClientState()
+        console.log(d)
         window.snap.loginkit.fetchUserInfo()
           .then((data) => {
             console.log(data)
             return resolve(data)
-          })
+          }, err => console.log(err))
       }
+
+      // handleAuthGrantFlowCallback: () => {
+      //   console.log(window.snap.loginkit.generateClientState())
+      //   console.log(window.snap.loginkit.generateCodeVerifierCodeChallenge())
+      // }
     })
   }
 })
