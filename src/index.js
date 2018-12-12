@@ -289,10 +289,15 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
         ref: this.setInstance
       }
     }
-
-    return (
-      <WrappedComponent id={this.props.provider === 'snapchat' ? 'my-login-button-target' : null} triggerLogin={this.login} {...additionnalProps} {...originalProps} />
-    )
+    switch (this.props.provider) {
+      case 'snapchat':
+        return (<WrappedComponent id='my-login-button-target' triggerLogin={this.login} {...additionnalProps} {...originalProps} />)
+      // case 'naver':
+      //   return (<WrappedComponent id='naverIdLogin' triggerLogin={this.login} {...additionnalProps} {...originalProps} />)
+      default:
+        return (<WrappedComponent triggerLogin={this.login} {...additionnalProps} {...originalProps} />)
+    }
+    // return (<WrappedComponent id={this.props.provider === 'snapchat' ? 'my-login-button-target' : null} triggerLogin={this.login} {...additionnalProps} {...originalProps} />)
   }
 }
 
