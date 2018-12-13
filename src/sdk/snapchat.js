@@ -25,44 +25,58 @@ const load = ({ appId, redirect }) => new Promise((resolve, reject) => {
     window.snap.loginkit.mountButton('my-login-button-target', {
       clientId: _clientId,
       redirectURI: redirect,
+      state: window.snap.loginkit.generateClientState(),
       scopeList: [
         `https://auth.snapchat.com/oauth2/api/user.display_name`,
         `https://auth.snapchat.com/oauth2/api/user.bitmoji.avatar`
       ],
-
       handleResponseCallback: function (err) {
-        console.log(err)
-        let d = window.snap.loginkit.generateClientState()
-        console.log(d)
+        console.warn(err)
         window.snap.loginkit.fetchUserInfo()
-          .then((data) => {
+          .then(data => {
             console.log(data)
-            return resolve(data)
-          }, err => console.log(err))
+          })
+          .catch(e => {
+            console.log(e)
+          })
       }
-
       // handleAuthGrantFlowCallback: () => {
       //   console.log(window.snap.loginkit.generateClientState())
       //   console.log(window.snap.loginkit.generateCodeVerifierCodeChallenge())
       // }
     })
   }
-})
-
-const checkLogin = () => new Promise((resolve, reject) => {
-
-})
-
-const login = () => new Promise((resolve, reject) => {
-
-})
-
-const generateUser = () => new Promise((resolve, reject) => {
   return resolve()
 })
 
-const logout = () => new Promise((resolve, reject) => {
-  resolve()
+const checkLogin = (autoLogin = false) => {
+  if (autoLogin) return login()
+  return Promise.reject(rslError({
+    provider: 'snapchat',
+    type: 'check_login',
+    description: '--',
+    error: null
+  }))
+}
+
+const login = () => {
+  checkLogin()
+    .then(res => {
+      console.log(res)
+      return Promise.resolve(res)
+    })
+    .catch(err => {
+      console.log(err)
+      return Promise.reject(err)
+    })
+}
+
+const generateUser = () => new Promise((resolve) => {
+  return resolve()
+})
+
+const logout = () => new Promise((resolve) => {
+  return resolve()
 })
 
 export default {
