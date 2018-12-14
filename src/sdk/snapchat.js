@@ -25,7 +25,7 @@ const load = ({ appId, redirect }) => new Promise((resolve, reject) => {
     window.snap.loginkit.mountButton('my-login-button-target', {
       clientId: _clientId,
       redirectURI: redirect,
-      state: window.snap.loginkit.generateClientState(),
+      // state: window.snap.loginkit.generateClientState(),
       scopeList: [
         `https://auth.snapchat.com/oauth2/api/user.display_name`,
         `https://auth.snapchat.com/oauth2/api/user.bitmoji.avatar`
@@ -49,7 +49,7 @@ const load = ({ appId, redirect }) => new Promise((resolve, reject) => {
   return resolve()
 })
 
-const checkLogin = (autoLogin = false) => {
+const checkLogin = (autoLogin) => {
   if (autoLogin) return login()
   return Promise.reject(rslError({
     provider: 'snapchat',
@@ -59,21 +59,13 @@ const checkLogin = (autoLogin = false) => {
   }))
 }
 
-const login = () => {
+const login = () => new Promise((resolve) => {
   checkLogin()
-    .then(res => {
-      console.log(res)
-      return Promise.resolve(res)
-    })
-    .catch(err => {
-      console.log(err)
-      return Promise.reject(err)
-    })
-}
-
-const generateUser = () => new Promise((resolve) => {
   return resolve()
 })
+// const generateUser = () => new Promise(() => {
+//   return resolve()
+// })
 
 const logout = () => new Promise((resolve) => {
   return resolve()
@@ -81,7 +73,7 @@ const logout = () => new Promise((resolve) => {
 
 export default {
   load,
-  generateUser,
+  // generateUser,
   checkLogin,
   logout,
   login

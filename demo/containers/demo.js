@@ -199,13 +199,8 @@ export default class Demo extends Component {
       children.push(
         <SocialButton
           provider='snapchat'
-<<<<<<< HEAD
           appId='951d3917-3aa7-4563-bf47-c2106dca2ca3'
           redirect='https://localhost:8080'
-=======
-          appId='235feb3f-a4f0-4701-850b-911310f2bb75'
-          redirect='https://localhost:8080/#'
->>>>>>> origin
           onLoginSuccess={this.onLoginSuccess}
           onLoginFailure={this.onLoginFailure}
           onLogoutSuccess={this.onLogoutSuccess}
