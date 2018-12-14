@@ -72,9 +72,9 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
    * Loads SDK on componentDidMount and handles auto login.
    */
   componentDidMount () {
-    const { appId, autoCleanUri, autoLogin, gatekeeper, redirect, scope } = this.props
+    const { appId, autoCleanUri, autoLogin, gatekeeper, redirect, scope, secretid } = this.props
 
-    this.loadPromise = this.sdk.load({ appId, redirect, gatekeeper, scope })
+    this.loadPromise = this.sdk.load({ appId, redirect, gatekeeper, scope, secretid })
       .then((accessToken) => {
         if (autoCleanUri) {
           cleanLocation()
@@ -293,6 +293,7 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
     let id
     if (this.props.provider === 'snapchat') id = 'my-login-button-target'
     else if (this.props.provider === 'kakao') id = 'kakao-login-btn'
+    else if (this.props.provider === 'naver') id = 'naverIdLogin'
 
     return (
       <WrappedComponent
@@ -301,7 +302,14 @@ const SocialLogin = (WrappedComponent) => class SocialLogin extends Component {
         {...additionnalProps}
         {...originalProps} />
     )
+    // switch (this.props.provider) {
+    //   case 'snapchat':
+    //     return (<WrappedComponent id='my-login-button-target' triggerLogin={this.login} {...additionnalProps} {...originalProps} />)
+    //   // case 'naver':
+    //   //   return (<WrappedComponent id='naverIdLogin' triggerLogin={this.login} {...additionnalProps} {...originalProps} />)
+    //   default:
+    //     return (<WrappedComponent triggerLogin={this.login} {...additionnalProps} {...originalProps} />)
+    // }
   }
 }
-
 export default SocialLogin

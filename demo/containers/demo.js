@@ -136,8 +136,8 @@ export default class Demo extends Component {
           autoCleanUri
           provider='naver'
           appId='Wzrp65CQcHLALXh8OiIw'
-          // secretId='Mfx_1boen3'
-          redirect='https://fxnpnua053.execute-api.us-east-2.amazonaws.com/latest/'
+          // secretid='Mfx_1boen3'
+          redirect='https://localhost:8080'
           onLoginSuccess={this.onLoginSuccess}
           onLoginFailure={this.onLoginFailure}
           onLogoutSuccess={this.onLogoutSuccess}
@@ -198,32 +198,18 @@ export default class Demo extends Component {
       children.push(
         <SocialButton
           provider='snapchat'
-          appId='235feb3f-a4f0-4701-850b-911310f2bb75'
+          appId='951d3917-3aa7-4563-bf47-c2106dca2ca3'
           redirect='https://localhost:8080'
           onLoginSuccess={this.onLoginSuccess}
           onLoginFailure={this.onLoginFailure}
           onLogoutSuccess={this.onLogoutSuccess}
+          onLogoutFailure={this.onLogoutFailure}
           getInstance={this.setNodeRef.bind(this, 'snapchat')}
           key={'snapchat'}
         >
           Login with Snapshot
         </SocialButton>
       )
-      /*
-      children.push(
-        <SocialButton
-          provider='twitter'
-          appId='5L29zhg7oaGHlHmqiOes3hMar'
-          redirect='http://localhost:8080'
-          getInstance={this.setNodeRef.bind(this, 'twitter')}
-          onLoginSuccess={this.onLoginSuccess}
-          onLoginFailure={this.onLoginFailure}
-          key={'twitter'}
-        >
-          Login with Twitter
-        </SocialButton>
-      )
-      */
     }
 
     return children

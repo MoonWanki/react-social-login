@@ -1,13 +1,11 @@
 import Promise from 'bluebird'
 
-import { rslError, parseAsURL } from '../utils'
+import { rslError } from '../utils'
 
 let _clientId
-let _redirect
 
 const load = ({ appId, redirect }) => new Promise((resolve, reject) => {
   _clientId = appId
-  _redirect = parseAsURL(redirect)
 
   const firstJS = document.getElementsByTagName('script')[0]
   const js = document.createElement('script')
@@ -26,40 +24,57 @@ const load = ({ appId, redirect }) => new Promise((resolve, reject) => {
   window.snapKitInit = function () {
     window.snap.loginkit.mountButton('my-login-button-target', {
       clientId: _clientId,
-      redirectURI: _redirect.toString(),
+      redirectURI: redirect,
+      // state: window.snap.loginkit.generateClientState(),
       scopeList: [
-        'https://auth.snapchat.com/oauth2/api/user.display_name',
-        'https://auth.snapchat.com/oauth2/api/user.bitmoji.avatar'
+        `https://auth.snapchat.com/oauth2/api/user.display_name`,
+        `https://auth.snapchat.com/oauth2/api/user.bitmoji.avatar`
       ],
-      handleResponseCallback: () => {
+      handleResponseCallback: function (err) {
+        console.warn(err)
         window.snap.loginkit.fetchUserInfo()
-          .then((data) => {
-            return resolve(data)
+          .then(data => {
+            console.log(data)
           })
-          .catch((err) => {
-            console.log(err)
-            return reject(rslError({
-              provider: 'snapchat',
-              type: 'load',
-              description: 'not fetch user',
-              error: null
-            }))
+          .catch(e => {
+            console.log(e)
           })
       }
+      // handleAuthGrantFlowCallback: () => {
+      //   console.log(window.snap.loginkit.generateClientState())
+      //   console.log(window.snap.loginkit.generateCodeVerifierCodeChallenge())
+      // }
     })
   }
+  return resolve()
 })
 
-const login = () => new Promise((resolve, reject) => {
+const checkLogin = (autoLogin) => {
+  if (autoLogin) return login()
+  return Promise.reject(rslError({
+    provider: 'snapchat',
+    type: 'check_login',
+    description: '--',
+    error: null
+  }))
+}
 
+const login = () => new Promise((resolve) => {
+  checkLogin()
+  return resolve()
 })
+// const generateUser = () => new Promise(() => {
+//   return resolve()
+// })
 
-const generateUser = () => new Promise((resolve, reject) => {
+const logout = () => new Promise((resolve) => {
   return resolve()
 })
 
 export default {
   load,
-  generateUser,
+  // generateUser,
+  checkLogin,
+  logout,
   login
 }
