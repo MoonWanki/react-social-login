@@ -12,15 +12,17 @@ Name | Position
 ## Features  
 
 [React Social Login](https://github.com/deepakaggarwal7/react-social-login)  
-위 라이브러리는 일부 업체(구글+, 페이스북, 아마존, 인스타그램, 깃허브, 링크드인) 소셜 로그인 API가 적용된 React 버튼 컴포넌트로 사용할 수 있는 환경을 제공하는 라이브러리이다.
+위 라이브러리는 일부 업체(구글+, 페이스북, 아마존, 인스타그램, 깃허브, 링크드인) 소셜 로그인 API가 적용된 React 버튼 컴포넌트로 사용할 수 있는 환경을 제공하는 라이브러리이다.  
 
-우리는 이에 현재 제공하고 있지 않은 스냅챗 (이전 트위터), 야후 (이전 마이크로소프트), 네이버, 카카오 소셜 로그인을 추가하여 지원하는 소셜 로그인 환경을 확장한다.
+우리는 위의 프로젝트를 FORK 하여 현재 제공하고 있지 않은 스냅챗 (이전 트위터), 야후 (이전 마이크로소프트), 네이버, 카카오 소셜 로그인을 추가하여 지원하는 소셜 로그인 환경을 확장한다.  
 
 또한, [React Social Login Buttons](https://github.com/MichalSzorad/react-social-login-buttons) 라이브러리를 자체 적용시켜 버튼 디자인을 동시에 제공함으로써 별도의 버튼 이미지를 불러올 필요를 없앤다.  
 
 이를 통해 기존보다 다양한 소셜 로그인 기능을 갖춘 React components를 제공할 수 있게되며  
-소셜 로그인 API 연동이 필요한 React 개발자들은 별도의 API 적용 작업 없이 단순한 컴포넌트 import를 통해 사용할 수 있게 된다.   
+소셜 로그인 API 연동이 필요한 React 개발자들은 별도의 API 적용 작업 없이 단순한 컴포넌트 import를 통해 사용할 수 있게 된다.  
   
+## Background  
+최근 리액트JS를 활용한 어플리케이션들이 늘어나고 있다. 그에 따라 리액트 생태계가 넓어지면서 많은 오픈소스 라이브러리가 생겨나고 있어 웹어플리케이션을 제작하는데 있어 기존의 소셜로그인 기능을 리액트를 통해서 사용하고자 하는 일이 많아질 것으로 예상된다. 이를 통해서 리액트를 이용하는 SW 개발자들에게 로그인 라이브러리를 제공하여 간편하게 기능을 구현할 수 있도록 하고자 한다.  
 
 ## Usage
 
@@ -146,8 +148,17 @@ ReactDOM.render(
   </div>,
   document.getElementById('app')
 )
-```
-  
+```  
+## Improvement
+![titleimg](/improve.png)  
+기존의 facebook, google, instagram, linkedin, amazon 만 있던 프로젝트에서 Naver, Kakao, Yahoo, Snapchat 의 로그인을 추가하였다.
+
+## New Demo page
+[react-social-login-demo](http://git.ajou.ac.kr/open-source-SW-2018-fall/react-social-login-demo)  
+기존의 서비스에 추가한 서비스를 제공하는 데모 페이지를 제작하였다.  
+혹은 이 [Link](https://opensw.octopusfantasy.com/) 를 통해서 확인가능하다.  
+이 링크에서 데모서비스 사용과 코드의 샘플을 볼 수 있다.  
+
 ## Forked project
 - **React Social Login** | https://github.com/deepakaggarwal7/react-social-login  
 React Social Login is an HOC which provides social login through multiple providers.  
